@@ -2,50 +2,112 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Calculator</title>
-    <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calculator</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+  <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
-    <div class="calculator">
-        <div id="display" class="display">0</div>
+  <div class="calculator">
 
-        <div class="buttons">
+    <!-- TOP BAR -->
+    <div class="d-flex justify-content-between align-items-center mb-2">
+      <button class="btn-icon" onclick="undo()"><i class="fa-solid fa-rotate-left"></i></button>
 
-            <!-- Row 1 -->
-            <button class="number" onclick="append('1')">1</button>
-            <button class="number" onclick="append('2')">2</button>
-            <button class="number" onclick="append('3')">3</button>
-            <button class="operator btn-yellow" onclick="append('×')">×</button>
-            <button class="operator btn-yellow" onclick="append('÷')">÷</button>
+      <select class="form-select form-select-sm mode-select" onchange="toggleMode(this.value)">
+        <option value="basic">Basic</option>
+        <option value="advanced">Advanced</option>
+      </select>
 
-            <!-- Row 2 -->
-            <button class="number" onclick="append('4')">4</button>
-            <button class="number" onclick="append('5')">5</button>
-            <button class="number" onclick="append('6')">6</button>
-            <button class="operator btn-yellow" onclick="append('+')">+</button>
-            <button class="operator btn-yellow" onclick="append('-')">-</button>
-
-            <!-- Row 3 -->
-            <button class="number" onclick="append('7')">7</button>
-            <button class="number" onclick="append('8')">8</button>
-            <button class="number" onclick="append('9')">9</button>
-            <button class="operator btn-yellow" onclick="append('%')">%</button>
-            <button class="operator btn-yellow" onclick="append('^')">^</button>
-
-            <!-- Row 4 -->
-            <button class="number" onclick="append('.')">.</button>
-            <button class="number" onclick="append('0')">0</button>
-            <button class="function" onclick="backspace()">⌫</button>
-            <button class="function" onclick="cleardisplay()">C</button>
-            <button class="equal" onclick="calculate()">=</button>
-
-        </div>
+      <button class="btn-icon" onclick="toggleHistory()"><i class="fa-solid fa-clock-rotate-left"></i></button>
     </div>
 
-    <script src="script.js" defer></script>
-</body>
+    <div id="display" class="display">0</div>
 
+    <div class="buttons">
+
+      <!-- Advanced-only: Shift + Memory + DEG + Copy + AC + Ans -->
+      <div class="adv new-functions-row" style="grid-column: span 6;">
+        <button class="function adv" id="shiftBtn" onclick="toggleShift()">Shift</button>
+        <button class="function adv" onclick="memoryAdd()">M+</button>
+        <button class="function adv" onclick="memoryRecall()">MR</button>
+        <button class="function adv" onclick="memoryClear()">MC</button>
+        <button class="function adv" id="angleSwitch" onclick="toggleAngle()">DEG</button>
+        <button class="function adv" onclick="copyResult()">Copy</button>
+        <button class="function adv" onclick="cleardisplay()">AC</button>
+        <button class="function adv" onclick="useAns()">Ans</button>
+      </div>
+
+      <!-- Scientific Buttons -->
+      <button class="adv" onclick="append('(')">(</button>
+      <button class="adv" onclick="append(')')">)</button>
+      <button class="adv" onclick="append('x²')">x²</button>
+      <button class="adv" onclick="append('∛(')">∛</button>
+      <button class="adv" onclick="append('√(')">√</button>
+
+      <button class="adv" onclick="append('sin(')">sin</button>
+      <button class="adv" onclick="append('cos(')">cos</button>
+      <button class="adv" onclick="append('tan(')">tan</button>
+      <button class="adv" onclick="append('log(')">log</button>
+      <button class="adv" onclick="append('ln(')">ln</button>
+
+      <button class="adv" onclick="append('π')">π</button>
+      <button class="adv" onclick="append('e')">e</button>
+      <button class="adv" onclick="append('^')">xʸ</button>
+      <button class="adv" onclick="append('%')">mod</button>
+      <button class="adv" onclick="append('√(')">√</button>
+
+      <!-- Row 1 -->
+      <button class="number" onclick="append('1')">1</button>
+      <button class="number" onclick="append('2')">2</button>
+      <button class="number" onclick="append('3')">3</button>
+      <button class="operator btn-purple" onclick="append('×')">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <button class="operator btn-purple" onclick="append('÷')">÷</button>
+
+      <!-- Row 2 -->
+      <button class="number" onclick="append('4')">4</button>
+      <button class="number" onclick="append('5')">5</button>
+      <button class="number" onclick="append('6')">6</button>
+      <button class="operator btn-purple" onclick="append('+')">+</button>
+      <button class="operator btn-purple" onclick="append('-')">-</button>
+
+      <!-- Row 3 -->
+      <button class="number" onclick="append('7')">7</button>
+      <button class="number" onclick="append('8')">8</button>
+      <button class="number" onclick="append('9')">9</button>
+      <button class="operator btn-purple" onclick="append('%')">%</button>
+      <button class="operator btn-purple" onclick="append('^')">^</button>
+
+      <!-- Row 4 -->
+      <button class="number" onclick="append('.')">.</button>
+      <button class="number" onclick="append('0')">0</button>
+      <button class="function" onclick="backspace()">⌫</button>
+      <button class="function" onclick="cleardisplay()">C</button>
+      <button class="equal btn-purple" onclick="calculate()">=</button>
+
+    </div>
+
+    <!-- HISTORY -->
+    <div class="history mt-3" id="history" style="display:none;">
+      <div class="d-flex justify-content-between mb-2">
+        <strong>History</strong>
+        <button class="btn-clear-history" onclick="clearHistory()">Clear</button>
+      </div>
+      <div id="historyList"></div>
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
 </html>
