@@ -15,6 +15,11 @@ historyData.forEach(item => {
 });
 
 function append(value) {
+  if (isShift) {
+    if (value === 'x²') value = '√(';
+    isShift = false;
+    document.getElementById("shiftBtn").style.background = "#444";
+  }
   if (display.innerText === "0") display.innerText = value;
   else display.innerText += value;
 }
@@ -45,12 +50,34 @@ function copyResult() { navigator.clipboard.writeText(display.innerText); }
 
 function calculate() {
   try {
-    let expression = display.innerText
+    let expr = display.innerText
       .replace(/×/g, "*")
       .replace(/÷/g, "/")
-      .replace(/\^/g, "**");
+      .replace(/\^/g, "**")
+      .replace(/π/g, "Math.PI")
+      .replace(/e/g, "Math.E")
+      .replace(/√\(/g, "Math.sqrt(")
+      .replace(/∛\(/g, "Math.cbrt(")
+      .replace(/log\(/g, "Math.log10(")
+      .replace(/ln\(/g, "Math.log(");
 
-    let result = eval(expression);
+    expr = expr.replace(/sin\(/g, () =>
+      isShift
+        ? isDegree ? "(180/Math.PI)*Math.asin(" : "Math.asin("
+        : isDegree ? "Math.sin(Math.PI/180*" : "Math.sin("
+    );
+    expr = expr.replace(/cos\(/g, () =>
+      isShift
+        ? isDegree ? "(180/Math.PI)*Math.acos(" : "Math.acos("
+        : isDegree ? "Math.cos(Math.PI/180*" : "Math.cos("
+    );
+    expr = expr.replace(/tan\(/g, () =>
+      isShift
+        ? isDegree ? "(180/Math.PI)*Math.atan(" : "Math.atan("
+        : isDegree ? "Math.tan(Math.PI/180*" : "Math.tan("
+    );
+
+    let result = eval(expr);
     lastResult = result;
 
     let entry = `${display.innerText} = ${result}`;
@@ -62,6 +89,8 @@ function calculate() {
   } catch {
     display.innerText = "Error";
   }
+  isShift = false;
+  document.getElementById("shiftBtn").style.background = "#444";
 }
 
 function toggleHistory() {
@@ -79,13 +108,11 @@ function toggleMode(mode) {
   else calculator.classList.remove("advanced-mode");
 }
 
-/* 💱 Currency Panel */
 function toggleCurrency() {
   currencyPanel.style.display =
     currencyPanel.style.display === "none" ? "block" : "none";
 }
 
-/* 💱 Currency Conversion */
 async function convertCurrency() {
   let amount = document.getElementById("currencyAmount").value;
   let from = document.getElementById("fromCurrency").value;
