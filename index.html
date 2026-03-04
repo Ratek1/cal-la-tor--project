@@ -27,14 +27,22 @@
         <option value="advanced">Advanced</option>
       </select>
 
-      <button class="btn-icon" onclick="toggleHistory()"><i class="fa-solid fa-clock-rotate-left"></i></button>
+      <div class="d-flex gap-2">
+        <!-- Currency Icon -->
+        <button class="btn-icon" onclick="toggleCurrency()">
+          <i class="fa-solid fa-coins"></i>
+        </button>
+
+        <!-- History Icon -->
+        <button class="btn-icon" onclick="toggleHistory()">
+          <i class="fa-solid fa-clock-rotate-left"></i>
+        </button>
+      </div>
     </div>
 
     <div id="display" class="display">0</div>
 
     <div class="buttons">
-
-      <!-- Advanced-only: Shift + Memory + DEG + Copy + AC + Ans -->
       <div class="adv new-functions-row" style="grid-column: span 6;">
         <button class="function adv" id="shiftBtn" onclick="toggleShift()">Shift</button>
         <button class="function adv" onclick="memoryAdd()">M+</button>
@@ -46,7 +54,6 @@
         <button class="function adv" onclick="useAns()">Ans</button>
       </div>
 
-      <!-- Scientific Buttons -->
       <button class="adv" onclick="append('(')">(</button>
       <button class="adv" onclick="append(')')">)</button>
       <button class="adv" onclick="append('x²')">x²</button>
@@ -65,36 +72,29 @@
       <button class="adv" onclick="append('%')">mod</button>
       <button class="adv" onclick="append('√(')">√</button>
 
-      <!-- Row 1 -->
       <button class="number" onclick="append('1')">1</button>
       <button class="number" onclick="append('2')">2</button>
       <button class="number" onclick="append('3')">3</button>
-      <button class="operator btn-purple" onclick="append('×')">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
+      <button class="operator btn-purple" onclick="append('×')">×</button>
       <button class="operator btn-purple" onclick="append('÷')">÷</button>
 
-      <!-- Row 2 -->
       <button class="number" onclick="append('4')">4</button>
       <button class="number" onclick="append('5')">5</button>
       <button class="number" onclick="append('6')">6</button>
       <button class="operator btn-purple" onclick="append('+')">+</button>
       <button class="operator btn-purple" onclick="append('-')">-</button>
 
-      <!-- Row 3 -->
       <button class="number" onclick="append('7')">7</button>
       <button class="number" onclick="append('8')">8</button>
       <button class="number" onclick="append('9')">9</button>
       <button class="operator btn-purple" onclick="append('%')">%</button>
       <button class="operator btn-purple" onclick="append('^')">^</button>
 
-      <!-- Row 4 -->
       <button class="number" onclick="append('.')">.</button>
       <button class="number" onclick="append('0')">0</button>
       <button class="function" onclick="backspace()">⌫</button>
       <button class="function" onclick="cleardisplay()">C</button>
       <button class="equal btn-purple" onclick="calculate()">=</button>
-
     </div>
 
     <!-- HISTORY -->
@@ -104,6 +104,38 @@
         <button class="btn-clear-history" onclick="clearHistory()">Clear</button>
       </div>
       <div id="historyList"></div>
+    </div>
+
+    <!-- CURRENCY CONVERTER -->
+    <div class="history mt-3" id="currencyPanel" style="display:none;">
+      <strong>Currency Converter</strong>
+
+      <input type="number" id="currencyAmount" class="form-control my-2" placeholder="Enter amount">
+
+      <div class="d-flex gap-2 mb-2">
+        <select id="fromCurrency" class="form-select">
+          <option value="ZMW">ZMW</option>
+          <option value="USD">USD</option>
+          <option value="EUR">EUR</option>
+          <option value="GBP">GBP</option>
+          <option value="ZAR">ZAR</option>
+          <option value="NGN">NGN</option>
+          <option value="KES">KES</option>
+        </select>
+
+        <select id="toCurrency" class="form-select">
+          <option value="USD">USD</option>
+          <option value="ZMW">ZMW</option>
+          <option value="EUR">EUR</option>
+          <option value="GBP">GBP</option>
+          <option value="ZAR">ZAR</option>
+          <option value="NGN">NGN</option>
+          <option value="KES">KES</option>
+        </select>
+      </div>
+
+      <button class="equal w-100" onclick="convertCurrency()">Convert</button>
+      <div id="currencyResult" class="mt-2"></div>
     </div>
 
   </div>

@@ -63,17 +63,17 @@ button {
   color: white;
 }
 
-/* 🔥 Advanced hidden by default */
+
 .adv { display: none; }
 
 /* 🔥 Advanced mode shows flex properly */
 .advanced-mode .adv {
-  display: flex;       /* show row as flex */
-  flex-wrap: wrap;     /* wrap buttons */
-  gap: 8px;            /* spacing */
+  display: flex;       
+  flex-wrap: wrap;     
+  gap: 8px;            
 }
 
-/* Side expansion instead of vertical */
+
 .advanced-mode .buttons {
   grid-template-columns: repeat(6, 1fr);
 }
