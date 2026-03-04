@@ -16,10 +16,14 @@ historyData.forEach(item => {
 
 function append(value) {
   if (isShift) {
-    if (value === 'x²') value = '√(';
+    if (value === 'sin(') value = 'asin(';
+    else if (value === 'cos(') value = 'acos(';
+    else if (value === 'tan(') value = 'atan(';
+    else if (value === 'x²') value = '√(';
     isShift = false;
     document.getElementById("shiftBtn").style.background = "#444";
   }
+
   if (display.innerText === "0") display.innerText = value;
   else display.innerText += value;
 }
@@ -56,25 +60,30 @@ function calculate() {
       .replace(/\^/g, "**")
       .replace(/π/g, "Math.PI")
       .replace(/e/g, "Math.E")
+      .replace(/x²/g, "**2")
       .replace(/√\(/g, "Math.sqrt(")
       .replace(/∛\(/g, "Math.cbrt(")
       .replace(/log\(/g, "Math.log10(")
       .replace(/ln\(/g, "Math.log(");
 
     expr = expr.replace(/sin\(/g, () =>
-      isShift
-        ? isDegree ? "(180/Math.PI)*Math.asin(" : "Math.asin("
-        : isDegree ? "Math.sin(Math.PI/180*" : "Math.sin("
+      isDegree ? "Math.sin(Math.PI/180*" : "Math.sin("
     );
     expr = expr.replace(/cos\(/g, () =>
-      isShift
-        ? isDegree ? "(180/Math.PI)*Math.acos(" : "Math.acos("
-        : isDegree ? "Math.cos(Math.PI/180*" : "Math.cos("
+      isDegree ? "Math.cos(Math.PI/180*" : "Math.cos("
     );
     expr = expr.replace(/tan\(/g, () =>
-      isShift
-        ? isDegree ? "(180/Math.PI)*Math.atan(" : "Math.atan("
-        : isDegree ? "Math.tan(Math.PI/180*" : "Math.tan("
+      isDegree ? "Math.tan(Math.PI/180*" : "Math.tan("
+    );
+
+    expr = expr.replace(/asin\(/g, () =>
+      isDegree ? "(180/Math.PI)*Math.asin(" : "Math.asin("
+    );
+    expr = expr.replace(/acos\(/g, () =>
+      isDegree ? "(180/Math.PI)*Math.acos(" : "Math.acos("
+    );
+    expr = expr.replace(/atan\(/g, () =>
+      isDegree ? "(180/Math.PI)*Math.atan(" : "Math.atan("
     );
 
     let result = eval(expr);
@@ -89,6 +98,7 @@ function calculate() {
   } catch {
     display.innerText = "Error";
   }
+
   isShift = false;
   document.getElementById("shiftBtn").style.background = "#444";
 }
